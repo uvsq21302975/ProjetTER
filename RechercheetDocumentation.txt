@@ -1,0 +1,3 @@
+Jeu gobelet
+=> Jeu a somme nulle
+utilisation du théoreme Minimax + élagage des feuilles inutiles avec la méthode alpha beta. 
