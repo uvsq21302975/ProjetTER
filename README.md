@@ -12,4 +12,4 @@ Bibliotheque graphique ?
 
 Zakaria El Harti
 Thibault Chouipe
-Yassine Abiodun
+Steve Alabi
