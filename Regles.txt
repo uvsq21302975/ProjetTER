@@ -1,0 +1,20 @@
+Jeu gobelet :
+
+Chaque joueur dispose de 12 pions : 3 gigantesques, 3 grands, 3 moyens et 3 petits.
+Le plateau est une matrice 4x4.
+but du jeu : alignés 4 pions de la même couleur. 
+
+Au début de la partie, chaque joueur dispose de 3 tas composés chacun d'un pions
+de chaque sortes (donc 3 tas de 4 pions).
+On désigne un joueur pour commencer la partie puis chaque joueur va pouvoir a son
+tour : 	- Déplacer un pion disponible (au dessus de la pile) de son banc vers le plateau
+		- Déplacer une pion déja présente sur le plateau.
+
+A savoir que:
+	-Pion touché, pion a jouer.
+	-Il est interdit de manger un pion adverse avec un pion venant directement du banc 
+	sauf si l'adversaire a 3 pions alignés.
+	-Si on déplace un pion1 qui recouvrait un pion adverse et que se produit un alignement
+	de 4 pour l'adversaire, on peut s'en sortir si le pion1 peut recouvrir un autre pion sur
+	la ligne de 4.
+ 

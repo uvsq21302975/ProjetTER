@@ -1,3 +1,12 @@
-Jeu gobelet
-=> Jeu a somme nulle
-utilisation du théoreme Minimax + élagage des feuilles inutiles avec la méthode alpha beta. 
+Jeu gobelet : Jeu a deux joueurs à somme nulle.
+
+Jeu a somme nulle : la somme des gains est égale a 0 (un gain pour l'un est obligatoirement
+une perte pour l'autre. exemple : 1 = gagne, 0 = neutre, -1 = perd).
+
+donc Utilisation du théoreme Minimax (von Neumann) pour gérer l'IA
+ => On passe en revue toutes les possibilités pour un nombre limité de coups et on leurs 
+assigne une valeur qui prend en compte les bénéfices de chacun. Le meilleur choix est
+alors celui qui minimise les pertes du joueur.
+
++ élagage des feuilles inutiles avec la méthode alpha beta. 
+=> Tropde branches a explorer donc on visite seulement une fraction de l'arbre.
