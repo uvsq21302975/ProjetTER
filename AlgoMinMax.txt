@@ -1,0 +1,30 @@
+﻿L’algorithme MinMax s’applique aux jeux à deux joueurs et à somme nulle. Le but d’implémenter cet algorithme est de construire un programme qui sera capable de jouer de façon, plus ou moins intelligente, un coup possible. La structure de l’algorithme MinMax se base sur un arbre. Le but est de simuler les coups suivants et de passer en revue toutes les possibilités pour un nombre limité de coups. 
+
+
+
+
+
+Dans cet arbre, les nœuds en gris représentent les coups possibles du joueur actuel alors que ceux en bleu sont ceux du joueur adverse. 
+
+
+Le but est de minimiser les pertes et de maximiser le gain, on parcoure alors l’arbre des positions possible jusqu’à une profondeur bien définie. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Dans cet exemple l’arbre est de profondeur 3. Pour déterminer la valeur du nœud A, on choisit la valeur maximum de l’ensemble des nœuds B (A est un nœud joueur). Il faut donc déterminer les valeurs des nœuds B qui reçoivent chacun la valeur minimum stockée dans leurs ls (nœuds B sont opposants). Les nœuds C sont des feuilles, leur valeur peut donc être calculée par la fonction d’évaluation. 
+
