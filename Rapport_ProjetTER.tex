@@ -1,0 +1,188 @@
+\documentclass[a4]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage[T1]{fontenc}
+\usepackage{pdfpages}
+\usepackage{geometry}
+\geometry{hmargin=2.5cm,vmargin=2.5cm}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=L,	                       % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  language=C,                 	   % the language of the code
+  otherkeywords={*,...},           % if you want to add more keywords to the set
+  numbers=none,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=2,	                   % sets default tabsize to 2 spaces
+  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption= instead of title
+}
+%gestion des caractères latins
+\lstset{literate=
+  {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+  {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+  {à}{{\`a}}1 {è}{{\`e}}1 {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
+  {À}{{\`A}}1 {È}{{\'E}}1 {Ì}{{\`I}}1 {Ò}{{\`O}}1 {Ù}{{\`U}}1
+  {ä}{{\"a}}1 {ë}{{\"e}}1 {ï}{{\"i}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+  {Ä}{{\"A}}1 {Ë}{{\"E}}1 {Ï}{{\"I}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+  {â}{{\^a}}1 {ê}{{\^e}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {û}{{\^u}}1
+  {Â}{{\^A}}1 {Ê}{{\^E}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1 {Û}{{\^U}}1
+  {œ}{{\oe}}1 {Œ}{{\OE}}1 {æ}{{\ae}}1 {Æ}{{\AE}}1 {ß}{{\ss}}1
+  {ű}{{\H{u}}}1 {Ű}{{\H{U}}}1 {ő}{{\H{o}}}1 {Ő}{{\H{O}}}1
+  {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1 {å}{{\r a}}1 {Å}{{\r A}}1
+  {€}{{\EUR}}1 {£}{{\pounds}}1
+}
+%definition d'un syle pour les documents text
+\lstdefinestyle{txt}{
+	frame=none,
+	numbers=none,
+	stringstyle=\color{black},
+}
+
+\begin{document}
+	\title{\Huge{\textbf{Rapport TER}}}
+	\author{Alabi Steve - El Harti Zakaria - Chouipe Thibault \\ \\ \\ 
+		Dirigé par Mr Mautor \\ \\ \\ \\
+		Developpement d’une méthode de recherche arborescente pour \\ un jeu à 2 joueurs : application au 
+jeu Gobblet	\\ \\ \\}
+	\date{29 Mars 2018}
+		
+
+	\begin{titlepage}
+		\maketitle
+		\vspace{20em}
+	\end{titlepage}
+	
+	\section{Introduction}
+	
+	-Rappel sujet et but projet(nom projet, prof, année, matière, nom sujet..) \\
+	- \\
+	
+	
+	
+	
+	\section{Sommaire}
+	
+	ICI PLAN \\ \\
+	
+	
+	
+	
+	
+	\section{Gobblet, le jeu}
+		\subsection{Description du jeu}
+				Règles, petite image du jeu, trouvable sur internet..etc, origine\\ \\
+	
+		\subsection{Explication du problème}
+				-IA ...etc\\
+				-Fonction d'evaluation\\ \\
+				La fonction d'évaluation attribue un score a chaque feuille (qui représente l'état du jeu a un instant t).
+Plus le score est élever, plus l'état de jeu est favorable a l'IA.
+Fonction d'évaluation :
+	Séparé en 2 catégorie : Bonus/Malus
+	Malus:
+		Si 2 pions adverses sur la même ligne (ou grandes diagonales) = -50
+		Si 3 pions adverses sur la même ligne (ou grandes diagonales)= -100
+		Si 3 pions adverses sur la même ligne (ou grandes diagonales)= -150
+	Bonus:
+		Si 2 pions amis sur la même ligne (ou grandes diagonales)= +50
+		Si 3 pions amis sur la même ligne (ou grandes diagonales)= +100
+		Si 3 pions amis sur la même ligne (ou grandes diagonales)= +150
+			A partir d'un alignemement superieur a 2:
+					Pour chaque tres gros : +5
+					Pour chaque gros : +4
+					Pour chaque moyen : +3
+					Pour chaque petit : +2
+rq : en additionnant les bonus du au type de pièces alignés, on ne doit pas dépasser 50 (car on considère qu'il est 
+plus important d'agrandir sa ligne plutot que de la renforcer).
+	\section{Partie code}
+					\subsubsection{Algo et implementation}
+					
+					\subsubsection{Algo minimax}
+Principe :\\
+L'objectif est de choisir le meilleur coup M a jouer pour l'IA.\\ \\
+
+L'algorithme minimax (aussi appelé algorithme MinMax) est un algorithme qui s'applique
+ à la théorie des jeux pour les jeux à deux joueurs à somme nulle (et à information complète)
+  consistant à minimiser la perte maximum (c'est-à-dire dans le pire des cas). \\ \\
+
+
+Exemple sur une prise de décisions entre deux coups différents avec une profondeur de 2.
+Pour ce faire, si l'IA a le choix entre deux coups B1 et B2, on va regarder ce que l'humain peut jouer
+après chacun de ces deux coups. Soit B1.a et B1.b et B2.a et B2.b les coups suivants, on va affecter a B1
+ et B2 la note minimale
+du coup suivant (Soit B1 = min(B1.a;B1.b) et B2 = min(B2.a; B2.b). Pourquoi le minimum ? Car on va considérer que 
+l'humain joue de facon optimale. Il va donc chercher et jouer le coup qui l'amène vers la victoire (et donc le plus mauvais 
+coup pour l'IA).
+Ensuite, l'IA va choisir le maximum entre B1 et B2(Soit M = max(B1,B2) car c'est le coup qui rapporte le plus tout en prenant
+en compte le
+fait que l'adversaire ne pourra pas jouer un "trop" mauvais coup qui le mettrait dans une situation compliquée le tour
+suivant.
+										%INTEGRER IMAGE 1 schema	
+											\subsubsection{Algo alpha beta}
+Élagage alpha-bêta
+Principe:
+
+C'est une technique permettant de réduire le nombre de noeuds évalués par l'algorithme minimax.
+
+L'algorithme minimax effectue en effet une exploration complète de l'arbre de recherche jusqu'à un niveau donné,
+alors qu'une exploration partielle de l'arbre est généralement suffisante : lors de l'exploration, il n'est pas nécessaire
+d'examiner les sous-arbres qui conduisent à des configurations dont la valeur ne contribuera pas au calcul du gain
+à la racine de l'arbre.
+Exemple :
+										%INTEGRER IMAGE 2
+										
+										
+Le nœud MIN vient de mettre à jour sa valeur courante à 4. Celle-ci, 
+qui ne peut que baisser, est déjà inférieure à alpha=5, la valeur actuelle du noeud MAX précédent.
+ Celui-ci cherchant la valeur la plus grande possible, ne la choisira donc de toute façon pas
+ 
+ Le noeud MIN vient de mettre à jour sa valeur courante à 6. Celle-ci, qui ne peut que baisser, est déjà égale à alpha=6, la valeur
+  actuelle du nœud MAX précédent. Celui-ci cherchant une valeur supérieure, il ne mettra de toute façon pas à jour sa valeur
+   que ce nœud vaille 6 ou moins.
+	
+	
+Le nœud MIN vient de mettre à jour sa valeur courante à 5. Celle-ci, qui ne peut que baisser, 
+est déjà inférieure à alpha=6, la valeur actuelle du nœud MAX précédent. Celui-ci cherchant la valeur la plus grande possible,
+ ne la choisira donc de toute façon pas.	
+										
+										
+					\subsubsection{Choix langage, bibliothèque,}	
+					   Java..etc
+					\subsubsection{Fonctionnement du jeu au niveau du code, details de qques fonctions}
+
+	\section{Simulation d'une partie, de coups joués}
+	-Image..etc
+	
+	\section{Conclusion}
+	
+	\section{Bibliographie}
+		
+
+	\section{Annexe}
+
+	
+\end{document}
