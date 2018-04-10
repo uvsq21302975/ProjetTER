@@ -17,8 +17,6 @@ public class Fenetre extends JFrame implements ActionListener{
   private Bouton HvsIA = new Bouton("1 VS IA");
   
   private JPanel container = new JPanel();
-  
-  private JLabel label = new JLabel("Le JLabel");
 
   
   public Fenetre(){
@@ -26,6 +24,7 @@ public class Fenetre extends JFrame implements ActionListener{
     this.setSize(900, 500);
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.setLocationRelativeTo(null);
+    this.setResizable(false);
     container.setBackground(Color.white);
     container.setLayout(new BorderLayout());
     container.add(pan, BorderLayout.CENTER);
@@ -41,11 +40,15 @@ public class Fenetre extends JFrame implements ActionListener{
     south.add(HvsH);
     south.add(HvsIA);
     container.add(south, BorderLayout.SOUTH);
-    container.add(label, BorderLayout.NORTH);
+   
     this.setContentPane(container);
     this.setVisible(true);    
   }
   
+  public void lancer_jeu() {
+	  this.dispose();
+	  Terrain T = new Terrain(); 
+  }
   //Méthode qui sera appelée lors d'un clic sur le HvsH
   public void actionPerformed(ActionEvent arg0) {
 	    
@@ -55,7 +58,7 @@ public class Fenetre extends JFrame implements ActionListener{
 	class HvsHListener implements ActionListener{
 	  //Redéfinition de la méthode actionPerformed()
 	  public void actionPerformed(ActionEvent arg0) {
-	    Terrain T = new Terrain();        
+		  lancer_jeu();  
 	  }
 	}
 	    
@@ -63,7 +66,7 @@ public class Fenetre extends JFrame implements ActionListener{
 	class HvsIAListener implements ActionListener{
 	  //Redéfinition de la méthode actionPerformed()
 	  public void actionPerformed(ActionEvent e) {
-	    label.setText("Vous avez cliqué sur le bouton 2");    
+	       
 	  }
 	}
 

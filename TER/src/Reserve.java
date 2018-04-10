@@ -8,6 +8,7 @@ import javax.swing.JPanel;
  
 public class Reserve extends JPanel implements MouseListener{
 	public int taille;
+	public boolean joueur2 = false;
 	public int select = 0;
 	private Case r1 = new Case();
 	private Case r2 = new Case();
@@ -19,6 +20,10 @@ public class Reserve extends JPanel implements MouseListener{
 	 public Reserve(){
 		  this.addMouseListener(this);  
 	  }
+	 public Reserve(int a){
+		 joueur2 = true;
+		  this.addMouseListener(this);  
+	  }
 	public void drawCenteredCircle(Graphics g, int x, int y, int r) {
 	  x = x-(r/2);
 	  y = y-(r/2);
@@ -26,7 +31,6 @@ public class Reserve extends JPanel implements MouseListener{
 	}
 	
   public void paintComponent(Graphics g){
-	 
 	  g.setColor(Color.red);
 	  int uniteX = getWidth()/4;
 	  int uniteY = uniteX;
@@ -38,7 +42,8 @@ public class Reserve extends JPanel implements MouseListener{
   }
   
   public void Affiche_pion(Graphics g) {
-	  g.setColor(Color.blue);
+	  if(joueur2) g.setColor(Color.yellow);
+	  else g.setColor(Color.blue);
 	  Point p1 = CoordonnerClik(1);
 	  Point c = new Point();
 	  c.x = p1.x + getWidth()/4;
@@ -127,7 +132,20 @@ public class Reserve extends JPanel implements MouseListener{
   }
   
   public void init_reserve() {
+	  r1.mega = 1;
+	  r1.grand = 1;
+	  r1.moyen = 1;
+	  r1.petit = 1;
 	  
+	  r2.mega = 1;
+	  r2.grand = 1;
+	  r2.moyen = 1;
+	  r2.petit = 1;
+	  
+	  r3.mega = 1;
+	  r3.grand = 1;
+	  r3.moyen = 1;
+	  r3.petit = 1;
   }
   
   public void Selectionner(MouseEvent e) {
