@@ -34,13 +34,13 @@ public class Terrain extends JFrame implements ActionListener{
 	    container.setBackground(Color.white);
 	    container.setLayout(new BorderLayout());
 	    
-	    //DÈfinition d'une police d'Ècriture
+	    //D√©finition d'une police d'√©criture
 	    Font police = new Font("Tahoma", Font.BOLD, 25);
 	    //On l'applique au JLabel
 	    label.setFont(police);
 	    //Changement de la couleur du texte
 	    label.setForeground(Color.blue);
-	    //On modifie l'alignement du texte gr‚ce aux attributs statiques
+	    //On modifie l'alignement du texte gr√¢ce aux attributs statiques
 	    //de la classe JLabel
 	    label.setHorizontalAlignment(JLabel.CENTER);
 	    
@@ -84,15 +84,15 @@ public class Terrain extends JFrame implements ActionListener{
 	}
 	
 	class rejouer implements ActionListener{
-		  //RedÈfinition de la mÈthode actionPerformed()
+		  //Red√©finition de la m√©thode actionPerformed()
 		  public void actionPerformed(ActionEvent arg0) {
-			  if(plateau.fin) Init_terrain();    
+			  Init_terrain();    
 		  }
 		}
 		    
-		//Classe Ècoutant notre second bouton
+		//Classe √©coutant notre second bouton
 		class Home implements ActionListener{
-		  //RedÈfinition de la mÈthode actionPerformed()
+		  //Red√©finition de la m√©thode actionPerformed()
 		  public void actionPerformed(ActionEvent e) {
 			   fermer();
 		  }
