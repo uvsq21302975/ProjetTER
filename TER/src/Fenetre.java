@@ -49,6 +49,12 @@ public class Fenetre extends JFrame implements ActionListener{
 	  this.dispose();
 	  Terrain T = new Terrain(); 
   }
+  
+  public void lancer_jeu_AI() {
+	  this.dispose();
+	  Terrain T = new Terrain(4); 
+  }
+  
   //Méthode qui sera appelée lors d'un clic sur le HvsH
   public void actionPerformed(ActionEvent arg0) {
 	    
@@ -66,7 +72,7 @@ public class Fenetre extends JFrame implements ActionListener{
 	class HvsIAListener implements ActionListener{
 	  //Redéfinition de la méthode actionPerformed()
 	  public void actionPerformed(ActionEvent e) {
-	       
+	       lancer_jeu_AI();
 	  }
 	}
 

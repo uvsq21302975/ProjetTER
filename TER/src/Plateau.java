@@ -17,11 +17,14 @@ public class Plateau extends JPanel implements MouseListener{
 	
 	public JLabel label = new JLabel("");
 	boolean fin = false;
+	boolean ordinateur = false;
 	boolean joueur1 = true;
-	boolean victoire = true;
+	int victoire = 0;
 	Reserve r = new Reserve();
 	Reserve r2 = new Reserve(4);
 	public int selectP = -1; 
+	public Case[][] c = new Case[4][4];
+	Ordinateur ordi = new Ordinateur();
 	
 	public Plateau(JLabel lab,Reserve r1,Reserve r2) {
 		this.label = lab;
@@ -29,8 +32,16 @@ public class Plateau extends JPanel implements MouseListener{
 		this.r2 = r2;
 		this.addMouseListener(this); 
 	}
+	public Plateau(JLabel lab,Reserve r1,Reserve r2,int x) {
+		this.addMouseListener(this);
+		this.label = lab;
+		this.r = r1;
+		this.r2 = r2;
+		ordinateur = true;
+		
+	}
 	
-	Case[][] c = new Case[4][4];
+	
 	
   public void paintComponent(Graphics g){
 	  
@@ -62,6 +73,18 @@ public class Plateau extends JPanel implements MouseListener{
   }
   
   public void init_Case_plateau() {
+	  int i,j;
+	  for(i=0;i<4;i++) {
+		  for(j=0;j<4;j++) {
+			  c[i][j] = new Case();
+			  c[i][j].petit = 0;
+			  c[i][j].moyen = 0;
+			  c[i][j].grand = 0;
+			  c[i][j].mega = 0;
+		  }
+	  }
+  }
+  public void init_Case_plateau(Case c[][]) {
 	  int i,j;
 	  for(i=0;i<4;i++) {
 		  for(j=0;j<4;j++) {
@@ -237,13 +260,26 @@ public class Plateau extends JPanel implements MouseListener{
 	  }
   }
   
+  public void Affiche_console_plateu(Case c[][]) {
+	  int i,j;
+	  for(i=0;i<4;i++) {
+		  for(j=0;j<4;j++) {
+			  System.out.print(Point_case(c[i][j]));
+			  System.out.print("|");
+		  }
+		  System.out.println();
+	  }
+	  System.out.println("*****");
+  }
+  
   public boolean fin_du_jeu() {
 	  int i,j,k ,ligne=0,colonne=0, diago=0, diago2=0;
 	  Point p = new Point(0,0);
 	  boolean joueur = true;
 	  
 	  for(k=0;k<2;k++) {
-		  victoire = joueur;
+		  if(joueur) victoire = 1;
+		  else victoire = 2;
 		  for(i=0;i<4;i++) {
 			  p.x=i;
 			  for(j=0;j<4;j++) {
@@ -284,7 +320,8 @@ public class Plateau extends JPanel implements MouseListener{
 	  if(joueur1) {
 		  joueur1 = false;
 		  label.setForeground(Color.yellow);
-		  label.setText("Joueur2");
+		  if(ordinateur) label.setText("Ordinateur");
+		  else label.setText("Joueur2");
 	  }
 	  else {
 		  joueur1 = true;
@@ -359,6 +396,49 @@ public class Plateau extends JPanel implements MouseListener{
 	  //r.Affiche_pion(g);
   }
   
+  public void Deplace_pion_AI(Case ca[][],int profondeur, Reserve r,Reserve r2) {
+	  Graphics g = getGraphics(); 
+	  Point deplacer = new Point(0,0);
+	  Point p_nouveau = new Point(0,0);
+	  Point p_ancien = new Point(0,0);
+	  Affiche_console_plateu(ca);
+	  deplacer = ordi.jouer_ordi(ca,profondeur,r,r2);
+	  System.out.println(deplacer.x);
+	  System.out.println(deplacer.y);
+	  p_nouveau = matrice_case(deplacer.y);
+	
+	  int Taille = 0;
+	  
+	  if(deplacer.x < 0) {
+		  if(deplacer.x == -1) {
+			  Taille = r2.reste1;
+			  r2.reste1--;
+		  }
+		  if(deplacer.x == -2) {
+			  Taille = r2.reste2;
+			  r2.reste2--;
+		  }
+		  if(deplacer.x == -3) {
+			  Taille = r2.reste3;
+			  r2.reste3--;
+		  }
+		  
+		  Ajout_pion(Taille,p_nouveau,false);
+	  }
+	  else {
+		  p_ancien = matrice_case(deplacer.x);
+		  Taille = Point_case(ca[p_ancien.x][p_ancien.y]);
+		  Taille = InitTaille(Taille);
+          Retire_pion(Taille,p_ancien);
+		  Efface_pion(deplacer.y,4);
+		  Efface_pion(deplacer.x,4);
+		  Ajout_pion(Taille,p_nouveau,false);
+	  }
+	  joueur_suivant();
+	  Dessine_pion(g);
+	  
+  }
+  
   public Point matrice_case(int num) {
 	  Point p = new Point();;
 	  p.x = num / 4;
@@ -391,13 +471,27 @@ public class Plateau extends JPanel implements MouseListener{
 //Méthode appelée lors du clic de souris
   public void mouseClicked(MouseEvent e) {
 	  if(!fin_du_jeu()) {
-		  if(joueur1) {Deplace_pion(e,r);}
-	  	  else {Deplace_pion(e,r2); }
+		  if(joueur1) {
+			  Deplace_pion(e,r);
+			  r.Selectionner(e);
+		  }
+	  	  else {
+	  		  if(ordinateur) {
+	  			  Deplace_pion_AI(c,3,r,r2);
+	  		  }
+	  		  else {
+	  			  Deplace_pion(e,r2);
+	  		  }
+	  		r2.Selectionner(e);
+	  	}
 	  }
 	  if(fin_du_jeu()) {
 		  label.setForeground(Color.black);
-		  if(victoire) label.setText("CARTE FIN DE JEU, BRAVO JOUEUR 1");
-		  else label.setText("CARTE FIN DE JEU, BRAVO JOUEUR 2");
+		  if(victoire == 1) label.setText("BRAVO JOUEUR 1");
+		  else {
+			  if(ordinateur)label.setText("L'ORDI GAGNE LA PARTIE");
+			  else label.setText("BRAVO JOUEUR 2");
+		  }
 		  fin = true;
 	  }
   }
