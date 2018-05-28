@@ -196,7 +196,7 @@ public class Plateau extends JPanel implements MouseListener{
 	  tailleNouv = InitTaille(tailleNouv);
 	  if(tailleAnc > tailleNouv) {
 		  Retire_pion(tailleAnc,PAnc);
-		  Efface_pion(selectP,tailleAnc);
+		  Efface_pion(selectP);
 		  Ajout_pion(tailleAnc,PNouv,joueur1);
 		  joueur_suivant();
 		  effacer(selectP);
@@ -218,8 +218,8 @@ public class Plateau extends JPanel implements MouseListener{
 	  }
   }
   
-  public void Efface_pion(int r,int taille) {
-	  int rayon = getWidth()/8 - 20*4 + 20*taille;
+  public void Efface_pion(int r) {
+	  int rayon = (getWidth()/8 - 20*4 + 20*4)+2;
 	  Graphics g = getGraphics(); 
 	  Point p = CoordonnerClik(r);
 	  p.x += getWidth()/8;
@@ -361,7 +361,7 @@ public class Plateau extends JPanel implements MouseListener{
 		  int taille = Point_case(c[AncienneCase.x][AncienneCase.y]);
 		  if(taille > 4) taille/=10;
 		  Retire_pion(taille,AncienneCase);
-		  Efface_pion(selectP,taille);
+		  Efface_pion(selectP);
 		  Ajout_pion(taille,matrice,joueur1);
 		  joueur_suivant();
 		  effacer(selectP);
@@ -422,7 +422,8 @@ public class Plateau extends JPanel implements MouseListener{
 			  Taille = r2.reste3;
 			  r2.reste3--;
 		  }
-		  
+		  r2.effacer(-deplacer.x);
+		  r2.dessine_rectangle(-deplacer.x);
 		  Ajout_pion(Taille,p_nouveau,false);
 	  }
 	  else {
@@ -430,8 +431,8 @@ public class Plateau extends JPanel implements MouseListener{
 		  Taille = Point_case(ca[p_ancien.x][p_ancien.y]);
 		  Taille = InitTaille(Taille);
           Retire_pion(Taille,p_ancien);
-		  Efface_pion(deplacer.y,4);
-		  Efface_pion(deplacer.x,4);
+		  Efface_pion(deplacer.y);
+		  Efface_pion(deplacer.x);
 		  Ajout_pion(Taille,p_nouveau,false);
 	  }
 	  joueur_suivant();
@@ -467,9 +468,28 @@ public class Plateau extends JPanel implements MouseListener{
 	  }
 	  return 0;
   }
+  int nbr_pion() {
+		 int i,j,nb_de_pions = 0;
+		 Point p = new Point(0,0);
+		 for(i=0;i<4;i++)
+		 {
+			 p.x=i;
+		      for(j=0;j<4;j++)
+		      {
+		    	  p.y=j;
+		           if(!Case_vide(p))
+		           {
+		                nb_de_pions++;
+		           }
+		      }
+		 }
+		 return nb_de_pions;
+	 }
   
 //Méthode appelée lors du clic de souris
   public void mouseClicked(MouseEvent e) {
+	  int nbr_pion_en_jeu = nbr_pion();
+	  int profondeur = 2;
 	  if(!fin_du_jeu()) {
 		  if(joueur1) {
 			  Deplace_pion(e,r);
@@ -477,7 +497,8 @@ public class Plateau extends JPanel implements MouseListener{
 		  }
 	  	  else {
 	  		  if(ordinateur) {
-	  			  Deplace_pion_AI(c,3,r,r2);
+	  			  if(nbr_pion_en_jeu > 7) profondeur = 3; 
+	  			  Deplace_pion_AI(c,profondeur,r,r2);
 	  		  }
 	  		  else {
 	  			  Deplace_pion(e,r2);

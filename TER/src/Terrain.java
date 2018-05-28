@@ -18,6 +18,7 @@ public class Terrain extends JFrame implements ActionListener{
 	 private Plateau plateau = new Plateau(label,reserve,reserve2);
 	 private Plateau plateau_ordi = new Plateau(label,reserve,reserve2,4);
 	
+	 private boolean ordi = false;
   
 	  private Bouton rejouer = new Bouton("Rejouer");
 	  
@@ -29,9 +30,10 @@ public class Terrain extends JFrame implements ActionListener{
 	public Terrain(int x) {
 		this.setTitle("GOBBLET");
 	    this.setSize(1100, 600);
+	    //this.setResizable(false);
 	   // this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    this.setLocationRelativeTo(null);
-	    
+	    ordi = true;
 	    container.setBackground(Color.white);
 	    container.setLayout(new BorderLayout());
 	    
@@ -78,13 +80,13 @@ public class Terrain extends JFrame implements ActionListener{
 	    container.setBackground(Color.white);
 	    container.setLayout(new BorderLayout());
 	    
-	    //D√©finition d'une police d'√©criture
+	    //DÈfinition d'une police d'Ècriture
 	    Font police = new Font("Tahoma", Font.BOLD, 25);
 	    //On l'applique au JLabel
 	    label.setFont(police);
 	    //Changement de la couleur du texte
 	    label.setForeground(Color.blue);
-	    //On modifie l'alignement du texte gr√¢ce aux attributs statiques
+	    //On modifie l'alignement du texte gr‚ce aux attributs statiques
 	    //de la classe JLabel
 	    label.setHorizontalAlignment(JLabel.CENTER);
 	    
@@ -115,7 +117,12 @@ public class Terrain extends JFrame implements ActionListener{
 	
 	public void Init_terrain() {
 		this.dispose();
-		Terrain T = new Terrain();
+		if(ordi) {
+			Terrain T = new Terrain(5);
+		}
+		else {
+			Terrain T = new Terrain();
+		}
 
 	}
 	public void fermer() {
@@ -128,15 +135,15 @@ public class Terrain extends JFrame implements ActionListener{
 	}
 	
 	class rejouer implements ActionListener{
-		  //Red√©finition de la m√©thode actionPerformed()
+		  //RedÈfinition de la mÈthode actionPerformed()
 		  public void actionPerformed(ActionEvent arg0) {
 			  Init_terrain();    
 		  }
 		}
 		    
-		//Classe √©coutant notre second bouton
+		//Classe Ècoutant notre second bouton
 		class Home implements ActionListener{
-		  //Red√©finition de la m√©thode actionPerformed()
+		  //RedÈfinition de la mÈthode actionPerformed()
 		  public void actionPerformed(ActionEvent e) {
 			   fermer();
 		  }

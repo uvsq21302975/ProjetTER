@@ -7,6 +7,7 @@ public class Ordinateur extends JPanel {
 	
 	public JLabel label = new JLabel("");
 	public Case[][] cas = new Case[4][4];
+	int maxAlea = 5;
 	
 	public Ordinateur() {
 		
@@ -37,6 +38,12 @@ public class Ordinateur extends JPanel {
 		  System.out.println("*****");
 	  }
 	 
+	 int randomWithRange(int min, int max)
+	 {
+	    int range = (max - min) + 1;     
+	    return (int)(Math.random() * range) + min;
+	 }
+	 
 	Point jouer_ordi(Case jeu[][],int profondeur,Reserve r,Reserve r2) {
 		 
 	     int max = -10000;
@@ -49,7 +56,7 @@ public class Ordinateur extends JPanel {
 	     Point p_parcour = new Point();
 	     Point case_modifier = new Point(0,0);
 	     Point p_ancien = new Point(0,0);
-	     int alea = (int) Math.random();
+	     int alea = 0;
 	     //init_Case_plateau(); //init c le jeu copier
 	     cas = jeu;
 	    
@@ -67,6 +74,7 @@ public class Ordinateur extends JPanel {
 		    	p.x=i;
 		          for(j=0;j<4;j++)
 		          {
+		        	  alea = randomWithRange(1,maxAlea);
 		        	  p.y=j;
 		        	  if(Case_vide(jeu,p))
 		                {
@@ -76,7 +84,7 @@ public class Ordinateur extends JPanel {
 		                      Ajout_pion(taille_reste_reserve,p,false);
 		                      
 		                      tmp = Min(cas,profondeur-1,r,r2);
-		                     System.out.println("RESERVE["+i+"]["+j+"]  :");
+		                     System.out.println("RESERVE N°"+k+":["+i+"]["+j+"]  :");
 		                     System.out.println(tmp);
 		                     // Affiche_console_valeur_tmp(tmp);
 		                      Retire_pion(taille_reste_reserve,p);
@@ -84,13 +92,14 @@ public class Ordinateur extends JPanel {
 		                      	if(k==0) r2.reste1++;
 		        		  		if(k==1) r2.reste2++;
 		        		  		if(k==2) r2.reste3++;
-		                      if(tmp > max || (tmp==max && alea==0))
+		                      if(tmp > max || (tmp==max && alea==1))
 		                      {
 		                    	  	reste_r = -(k+1);
 		                            max = tmp;
 		                            maxi = i;
 		                            maxj = j;
 		                            Tpr = taille_reste_reserve;
+		                            r2.select = k;
 		                      }
 		    
 		                }
@@ -119,6 +128,7 @@ public class Ordinateur extends JPanel {
 				    	p.x=i;
 				          for(j=0;j<4;j++)
 				          {
+				        	  alea = randomWithRange(1,maxAlea);
 				        	  p.y=j;
 				        	  taille_case2 = Taille_case(cas[i][j]);
 				        	  taille_case2 = InitTaille(taille_case2);
@@ -130,9 +140,9 @@ public class Ordinateur extends JPanel {
 			                      Retire_pion(taille_case,p);
 			                      Ajout_pion(taille_case,p_parcour,false);
 			                      
-			                      System.out.println("PLATEAU["+i+"]["+j+"] :");
+			                      System.out.println("PLATEAU pionN°["+k+"]["+m+"] : ["+i+"]["+j+"] :");
 					        	  System.out.println(tmp);
-					        	  if(tmp > max || (tmp==max && alea==0))
+					        	  if(tmp > max || (tmp==max && alea==1))
 			                      {
 			                    	  	p_ancien.x = p_parcour.x; //k
 			                    	  	p_ancien.y = p_parcour.y; //m
@@ -151,7 +161,9 @@ public class Ordinateur extends JPanel {
 	     //cas = jeu;
 	     p.x = maxi;
 	     p.y = maxj;
-	    
+	     System.out.println("rselect la : "+r2.select);
+	     
+	     
 	     if(deplace_sur_plateau) {
 	    	 
              case_modifier.x = Conversion_point_numero(p_ancien);
@@ -200,7 +212,7 @@ public class Ordinateur extends JPanel {
 	          return eval(jeu);
 	     }
 	     
-	     int alea = (int) Math.random();
+	     int alea = 0;
 	     int max = -10000;
 	     int i,j,k,m,tmp=0;
 	     int taille_reste_reserve=0;
@@ -221,6 +233,7 @@ public class Ordinateur extends JPanel {
 		    	p.x=i;
 		          for(j=0;j<4;j++)
 		          {
+		        	  alea = randomWithRange(1,maxAlea);
 		        	  p.y=j;
 		        	  if(Case_vide(jeu,p))
 		                {
@@ -233,7 +246,7 @@ public class Ordinateur extends JPanel {
 		                      	if(k==0) r2.reste1++;
 		        		  		if(k==1) r2.reste2++;
 		        		  		if(k==2) r2.reste3++;
-		                      if(tmp > max || (tmp==max && alea==0))
+		                      if(tmp > max || (tmp==max && alea==1))
 		                      {
 		                            max = tmp;
 		                      }
@@ -260,6 +273,7 @@ public class Ordinateur extends JPanel {
 				    	p.x=i;
 				          for(j=0;j<4;j++)
 				          {
+				        	  alea = randomWithRange(1,maxAlea);
 				        	  p.y=j;
 				        	  taille_case2 = Taille_case(cas[i][j]);
 				        	  taille_case2 = InitTaille(taille_case2);
@@ -271,7 +285,7 @@ public class Ordinateur extends JPanel {
 			                      Retire_pion(taille_case,p);
 			                      Ajout_pion(taille_case,p_parcour,false);
 			                      
-			                      if(tmp > max || (tmp==max && alea==0))
+			                      if(tmp > max || (tmp==max && alea==2))
 			                      {
 			                         max = tmp;
 			                      }
@@ -293,7 +307,8 @@ public class Ordinateur extends JPanel {
 	     {
 	          return eval(jeu);
 	     }
-	
+	     
+	     int alea = 0;
 	     int min = 10000;
 	     int i,j,m,k,tmp=0;
 	     int taille_reste_reserve=0;
@@ -315,7 +330,7 @@ public class Ordinateur extends JPanel {
 		          for(j=0;j<4;j++)
 		          {
 		        	  p.y=j;
-		        	  
+		        	  alea = randomWithRange(1,maxAlea);
 		        	  if(Case_vide(jeu,p))
 		                {
 		        		  		if(k==0) r.reste1--;
@@ -355,6 +370,7 @@ public class Ordinateur extends JPanel {
 				    	p.x=i;
 				          for(j=0;j<4;j++)
 				          {
+				        	  alea = randomWithRange(1,maxAlea);
 				        	  p.y=j;
 				        	  taille_case2 = Taille_case(cas[i][j]);
 				        	  taille_case2 = InitTaille(taille_case2);
@@ -438,6 +454,46 @@ public class Ordinateur extends JPanel {
 		  else return 0;
 	  }
 	  
+	 public int NpionsAligne(int n,Case c[][],int joueur) {
+		  int i,j,com=0 ,ligne=0,colonne=0, diago=0, diago2=0;
+		  Point p = new Point(0,0);
+			  
+			  for(i=0;i<4;i++) {
+				  p.x=i;
+				  for(j=0;j<4;j++) {
+					  p.y=j;
+					  if(!Case_vide(c,p)) {
+						  if(LastPionCaseJoueur1(c,p) == joueur)  ligne++;
+						  if(i == j) {
+							  if(LastPionCaseJoueur1(c,p) == joueur)  diago++;
+						  }
+						  if(i+j == 3) {
+							  if(LastPionCaseJoueur1(c,p) == joueur)  diago2++;
+						  }
+					  }
+				  }
+				  if(ligne == n) com++;
+				  ligne = 0;
+			  }
+			  if(diago == n) com++;
+			  if( diago2 == n) com++;
+			
+			  for(i=0;i<4;i++) {
+				  p.y=i;
+				  for(j=0;j<4;j++) {
+					  p.x=j;
+					  if(!Case_vide(c,p)) {
+						  if(LastPionCaseJoueur1(c,p) == joueur)  colonne++;
+					  }
+				  }
+				  if(colonne == n) com++;
+				  colonne = 0;
+			  }
+		
+		  
+		  return com;
+	  }
+	 
 	 public int fin_du_jeu(Case c[][]) {
 		  int i,j,k ,ligne=0,colonne=0, diago=0, diago2=0;
 		  Point p = new Point(0,0);
@@ -479,44 +535,48 @@ public class Ordinateur extends JPanel {
 			  joueur = 2;
 	  	}
 		//Si le jeu n'est pas fini et que personne n'a gagné, on renvoie 0
-          for(i=0;i<4;i++)
-          {
-        	  p.x=i;
-               for(j=0;j<4;j++)
-               {
-            	   p.y=j;
-                    if(Case_vide(c,p))
-                    {
-                         return 0;
-                    }
-               }
-          }
-          
+         for(i=0;i<4;i++)
+         {
+       	  p.x=i;
+              for(j=0;j<4;j++)
+              {
+           	   p.y=j;
+                   if(Case_vide(c,p))
+                   {
+                        return 0;
+                   }
+              }
+         }
+         
 		  return 3;
 	  }
 	 
+	 int nbr_pion(Case jeu[][]) {
+		 int i,j,nb_de_pions = 0;
+		 Point p = new Point(0,0);
+		 for(i=0;i<4;i++)
+		 {
+			 p.x=i;
+		      for(j=0;j<4;j++)
+		      {
+		    	  p.y=j;
+		           if(!Case_vide(jeu,p))
+		           {
+		                nb_de_pions++;
+		           }
+		      }
+		 }
+		 return nb_de_pions;
+	 }
 	 
 	int eval(Case jeu[][]){
 		
-		int vainqueur,nb_de_pions = 0;
-	 int i,j;
-	Point p = new Point(0,0);
-	 //On compte le nombre de pions présents sur le plateau
-	 for(i=0;i<4;i++)
-	 {
-		 p.x=i;
-	      for(j=0;j<4;j++)
-	      {
-	    	  p.y=j;
-	           if(!Case_vide(jeu,p))
-	           {
-	                nb_de_pions++;
-	           }
-	      }
-	 }
-	
-	 if((vainqueur=fin_du_jeu(jeu)) != 0)
-	 {
+		int vainqueur,nb_de_pions = nbr_pion(jeu);
+		int nbSerieJ1 = NpionsAligne(2,jeu,1);
+		int nbSerieJ2 = NpionsAligne(2,jeu,2);
+		
+		if((vainqueur=fin_du_jeu(jeu)) != 0)
+		{
 	      if( vainqueur == 2 )
 	      {
 	           return 1000 - nb_de_pions;
@@ -529,16 +589,28 @@ public class Ordinateur extends JPanel {
 	      {
 	           return 0;
 	      }
-	 }
-	
-	 //On compte le nombre de séries de 2 pions alignés de chacun des joueurs
-	     int series_j1 = 0, series_j2 = 0;
-	     
-	  
-	
-	     return series_j1 - series_j2;
-
+		}
+		return nbSerieJ2 - nbSerieJ1;
 	}
 	
 }
+/*
+  La fonction d'évaluation va parcourir toute la matrice et compter :
+   
+- 1 point par pion isolé petit 
+- 2 point par pion isolé moyen
+- 3 point par pion isolé grand 
+- 4 point par pion isolé géant
+
+- 50 point par alignement de 2 pions 
+		+ 1 point par pion petit + 2 point par pion moyen
+  		+ 3 point par pion grand + 4 point par pion géant
+- 200 point par alignemen de 3 pions 
+		+ 1 point par pion petit + 2 point par pion moyen
+  		+ 3 point par pion grand + 4 point par pion géant
+- 1000 points par alignement de 4 pions 
+		+ 1 point par pion petit + 2 point par pion moyen
+  		+ 3 point par pion grand + 4 point par pion géant
+
+ */
 

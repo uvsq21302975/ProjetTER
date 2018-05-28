@@ -76,6 +76,7 @@ public class Reserve extends JPanel implements MouseListener{
 		  rayon -= diminution;
 	  }
   }
+
   
   public int WhereIsClik(MouseEvent e) {
 	  if(e.getX() > getWidth()/4 && e.getX() < getWidth()/2 + getWidth()/4 ) {
@@ -178,7 +179,7 @@ public class Reserve extends JPanel implements MouseListener{
 	  Graphics g = getGraphics(); 
 	  Point p = CoordonnerClik(r);
 	  g.setColor(Color.white); 
-	  g.fillRect(p.x, p.y, getWidth()/2, getWidth()/2);
+	  g.fillRect(p.x-2, p.y-2, getWidth()/2+3, getWidth()/2+3);
   }
   
   public void dessine_rectangle(int r) {
