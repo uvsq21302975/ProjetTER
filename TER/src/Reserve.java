@@ -19,6 +19,7 @@ public class Reserve extends JPanel implements MouseListener{
 	
 	 public Reserve(){
 		  this.addMouseListener(this);  
+		 
 	  }
 	 public Reserve(int a){
 		 joueur2 = true;
@@ -31,7 +32,13 @@ public class Reserve extends JPanel implements MouseListener{
 	}
 	
   public void paintComponent(Graphics g){
-	  g.setColor(Color.red);
+	  super.paintComponent(g);
+	  //Color col = new Color(222,184,135);
+	  //setBackground(col);
+	  setBackground(Color.lightGray);
+      
+      g.setColor(Color.red);
+	  
 	  int uniteX = getWidth()/4;
 	  int uniteY = uniteX;
 	  for(int i=0; i<3; i++){
@@ -148,7 +155,10 @@ public class Reserve extends JPanel implements MouseListener{
 	  r3.moyen = 1;
 	  r3.petit = 1;
   }
-  
+  public void Refreash_pion() {
+	  Graphics g = getGraphics();
+	  Affiche_pion(g);
+  }
   public void Selectionner(MouseEvent e) {
 	  Graphics g = getGraphics(); 
 	  int r = WhereIsClik(e);

@@ -57,6 +57,8 @@ public class Ordinateur extends JPanel {
 	     Point case_modifier = new Point(0,0);
 	     Point p_ancien = new Point(0,0);
 	     int alea = 0;
+	     int pionhumain = 0;
+	     int alpha=9999;
 	     //init_Case_plateau(); //init c le jeu copier
 	     cas = jeu;
 	    
@@ -76,24 +78,27 @@ public class Ordinateur extends JPanel {
 		          {
 		        	  alea = randomWithRange(1,maxAlea);
 		        	  p.y=j;
-		        	  if(Case_vide(jeu,p))
+		        	  if(Case_vide(jeu,p) && nbr_pion(jeu) != 1)
 		                {
 		        		  		if(k==0) r2.reste1--;
 		        		  		if(k==1) r2.reste2--;
 		        		  		if(k==2) r2.reste3--;
 		                      Ajout_pion(taille_reste_reserve,p,false);
 		                      
-		                      tmp = Min(cas,profondeur-1,r,r2);
+		                     tmp = Min(cas,profondeur-1,r,r2,alpha);
+		                     alpha = tmp;
+		                     
 		                     System.out.println("RESERVE N°"+k+":["+i+"]["+j+"]  :");
 		                     System.out.println(tmp);
-		                     // Affiche_console_valeur_tmp(tmp);
 		                      Retire_pion(taille_reste_reserve,p);
 		                      
 		                      	if(k==0) r2.reste1++;
 		        		  		if(k==1) r2.reste2++;
 		        		  		if(k==2) r2.reste3++;
+		        		  		if(tmp > max) alpha = tmp;
 		                      if(tmp > max || (tmp==max && alea==1))
 		                      {
+		                    	  
 		                    	  	reste_r = -(k+1);
 		                            max = tmp;
 		                            maxi = i;
@@ -103,6 +108,7 @@ public class Ordinateur extends JPanel {
 		                      }
 		    
 		                }
+		        	  else pionhumain = Conversion_point_numero(p);
 		          }
 		     }
 		     
@@ -136,7 +142,10 @@ public class Ordinateur extends JPanel {
 				                {
 			                      Ajout_pion(taille_case,p,false);
 			                      Retire_pion(taille_case,p_parcour);
-			                      tmp = Min(cas,profondeur-1,r,r2);
+			                      
+			                      tmp = Min(cas,profondeur-1,r,r2,alpha);
+			                      alpha = tmp;
+			                      
 			                      Retire_pion(taille_case,p);
 			                      Ajout_pion(taille_case,p_parcour,false);
 			                      
@@ -161,7 +170,6 @@ public class Ordinateur extends JPanel {
 	     //cas = jeu;
 	     p.x = maxi;
 	     p.y = maxj;
-	     System.out.println("rselect la : "+r2.select);
 	     
 	     
 	     if(deplace_sur_plateau) {
@@ -170,9 +178,15 @@ public class Ordinateur extends JPanel {
              case_modifier.y = Conversion_point_numero(p);
 	     }
 	     else {
-	    
-	    	 case_modifier.x = reste_r;
-	    	 case_modifier.y = Conversion_point_numero(p);
+	    	 if(nbr_pion(jeu) == 1 ) {
+	    		 case_modifier.x = randomWithRange(-3,-1);
+	    		 case_modifier.y = randomWithRange(0,15);
+	    		 if(case_modifier.y == pionhumain) case_modifier.y++;
+	    	 }
+	    	 else {
+	    		 case_modifier.x = reste_r;
+	    		 case_modifier.y = Conversion_point_numero(p);
+	    	 }
 	     }
 	     return case_modifier;
 	}
@@ -205,7 +219,7 @@ public class Ordinateur extends JPanel {
   }
 	
 	
-	int Max(Case jeu[][],int profondeur,Reserve r,Reserve r2)
+	int Max(Case jeu[][],int profondeur,Reserve r,Reserve r2,int beta)
 	{
 	     if(profondeur == 0 || fin_du_jeu(jeu)!=0)
 	     {
@@ -218,7 +232,8 @@ public class Ordinateur extends JPanel {
 	     int taille_reste_reserve=0;
 	     Point p = new Point();
 	     Point p_parcour = new Point();
-	     
+	     boolean cut = false;
+	     int alpha = 9999;
 	     
 	     for(k=0;k<3;k++) {	//reserve
 	    	 if(k==0)taille_reste_reserve = r2.reste1;
@@ -241,7 +256,10 @@ public class Ordinateur extends JPanel {
 		        		  		if(k==1) r2.reste2--;
 		        		  		if(k==2) r2.reste3--;
 		                      Ajout_pion(taille_reste_reserve,p,false);
-		                      tmp = Min(cas,profondeur-1,r,r2);
+		                      tmp = Min(cas,profondeur-1,r,r2,alpha);
+		                      alpha = tmp;
+		                      if(tmp >= beta && beta != 9999) cut = true;
+		                      
 		                      Retire_pion(taille_reste_reserve,p);
 		                      	if(k==0) r2.reste1++;
 		        		  		if(k==1) r2.reste2++;
@@ -250,14 +268,19 @@ public class Ordinateur extends JPanel {
 		                      {
 		                            max = tmp;
 		                      }
-		    
+		                      if(cut) break;
 		                }
 		          }
+		          if(cut) break;
 		     }
+		     if(cut) break;
 	     }
 	     
 	     int taille_case = 0;
 	     int taille_case2 = 0;
+	     
+	     if(!cut) {
+	     
 	     for(k=0;k<4;k++) {	//PLATEAU
 	    	 p_parcour.x=k;
 	    	 for(m=0;m<4;m++) {
@@ -280,8 +303,12 @@ public class Ordinateur extends JPanel {
 				        	  if((Case_vide(jeu,p) || taille_case > taille_case2) && p != p_parcour)
 				                {
 			                      Ajout_pion(taille_case,p,false);
-			                      Retire_pion(taille_case,p_parcour);				                      
-			                      tmp = Min(cas,profondeur-1,r,r2);
+			                      Retire_pion(taille_case,p_parcour);
+			                      
+			                      tmp = Min(cas,profondeur-1,r,r2,alpha);
+			                      alpha = tmp;
+			                      if(tmp >= beta && beta != 9999) cut = true;
+			                      
 			                      Retire_pion(taille_case,p);
 			                      Ajout_pion(taille_case,p_parcour,false);
 			                      
@@ -290,17 +317,23 @@ public class Ordinateur extends JPanel {
 			                         max = tmp;
 			                      }
 				                }
+				        	  if(cut) break;
 				          }
+				          if(cut) break;
 				     }
 	    		 }// FIN if
+	    		 if(cut) break;
 	    	 }
+	    	 if(cut) break;
 	     }
+	     
+	     }//CUT
 	     
 	     return max;
 	     
 	}
 	
-	int Min(Case jeu[][],int profondeur,Reserve r,Reserve r2)
+	int Min(Case jeu[][],int profondeur,Reserve r,Reserve r2,int alpha)
 	{
 		
 	     if(profondeur == 0 || fin_du_jeu(jeu)!=0)
@@ -314,7 +347,8 @@ public class Ordinateur extends JPanel {
 	     int taille_reste_reserve=0;
 	     Point p = new Point();
 	     Point p_parcour = new Point();
-	  
+	     boolean cut = false;
+	     int beta = 9999;
 	     
 	     for(k=0;k<3;k++) {	//reserve
 	    	 if(k==0)taille_reste_reserve = r.reste1;
@@ -338,7 +372,10 @@ public class Ordinateur extends JPanel {
 		        		  		if(k==2) r.reste3--;
 		                      Ajout_pion(taille_reste_reserve,p,true);
 		                     
-		                      tmp = Max(cas,profondeur-1,r,r2);
+		                      tmp = Max(cas,profondeur-1,r,r2,beta);
+		                      beta = tmp;
+		                      if(tmp <= alpha && alpha != 9999) cut = true;
+		                      
 		                      Retire_pion(taille_reste_reserve,p);
 		                      	if(k==0) r.reste1++;
 		        		  		if(k==1) r.reste2++;
@@ -347,15 +384,19 @@ public class Ordinateur extends JPanel {
 		                      {
 		                            min = tmp;
 		                      }
-		    
+		                     if(cut) break;
 		                }
 		          }
+		          if(cut) break;
 		     }
+		     if(cut) break;
 	     }
 	    
 	     int taille_case = 0;
 	     int taille_case2 = 0;
 	    
+	     if(!cut) {
+	     
 	     for(k=0;k<4;k++) {	//PLATEAU
 	    	 p_parcour.x=k;
 	    	 for(m=0;m<4;m++) {
@@ -377,8 +418,12 @@ public class Ordinateur extends JPanel {
 				        	  if((Case_vide(jeu,p) || taille_case > taille_case2) && p != p_parcour)
 				                {
 			                      Ajout_pion(taille_case,p,true);
-			                      Retire_pion(taille_case,p_parcour);				                      
-			                      tmp = Max(cas,profondeur-1,r,r2);
+			                      Retire_pion(taille_case,p_parcour);	
+			                      
+			                      tmp = Max(cas,profondeur-1,r,r2,beta);
+			                      beta = tmp;
+			                      if(tmp <= alpha && alpha != 9999) cut = true;
+			                      
 			                      Retire_pion(taille_case,p);
 			                      Ajout_pion(taille_case,p_parcour,true);
 			                      if(tmp < min )
@@ -386,11 +431,17 @@ public class Ordinateur extends JPanel {
 			                           min = tmp;
 			                      }
 				                }
+				        	  if(cut) break;
 				          }
+				          if(cut) break;
 				     }
 	    		 }// FIN if
+	    		 if(cut) break;
 	    	 }
+	    	 if(cut) break;
 	     }
+	     
+	     }//CUT
 	     
 	     return min;
 	     
@@ -535,20 +586,8 @@ public class Ordinateur extends JPanel {
 			  joueur = 2;
 	  	}
 		//Si le jeu n'est pas fini et que personne n'a gagné, on renvoie 0
-         for(i=0;i<4;i++)
-         {
-       	  p.x=i;
-              for(j=0;j<4;j++)
-              {
-           	   p.y=j;
-                   if(Case_vide(c,p))
-                   {
-                        return 0;
-                   }
-              }
-         }
          
-		  return 3;
+		  return 0;
 	  }
 	 
 	 int nbr_pion(Case jeu[][]) {
@@ -571,11 +610,12 @@ public class Ordinateur extends JPanel {
 	 
 	int eval(Case jeu[][]){
 		
-		int vainqueur,nb_de_pions = nbr_pion(jeu);
+		int vainqueur=fin_du_jeu(jeu);
+		int nb_de_pions = nbr_pion(jeu);
 		int nbSerieJ1 = NpionsAligne(2,jeu,1);
 		int nbSerieJ2 = NpionsAligne(2,jeu,2);
 		
-		if((vainqueur=fin_du_jeu(jeu)) != 0)
+		if(vainqueur != 0)
 		{
 	      if( vainqueur == 2 )
 	      {

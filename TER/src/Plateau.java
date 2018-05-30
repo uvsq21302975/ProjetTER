@@ -49,6 +49,7 @@ public class Plateau extends JPanel implements MouseListener{
 	  int uniteX = getWidth()/4;
 	  int uniteY = getHeight()/4;
 	  for(int i=0; i<5; i++){
+		  if(i==4)g.drawLine(uniteX*i-1, 0, uniteX*i-1, getHeight());
 		g.drawLine(uniteX*i, 0, uniteX*i, getHeight());
 	  	g.drawLine(0, uniteY*i, getWidth(), uniteY*i);
 	  }
@@ -138,7 +139,14 @@ public class Plateau extends JPanel implements MouseListener{
   public void drawCenteredCircle(Graphics g, int x, int y, int r) {
 	  x = x-(r/2);
 	  y = y-(r/2);
+	  int cercle = 40;
 	  g.fillOval(x,y,r,r);
+	  g.setColor(Color.white); 
+	  r=r-cercle;
+	  x = x+(cercle/2);
+	  y = y+(cercle/2);
+	  g.fillOval(x, y, r, r);
+	 
 	}
   
   public void Ajout_pion(int reste, Point matrice,boolean joueur) {
@@ -488,30 +496,24 @@ public class Plateau extends JPanel implements MouseListener{
   
 //Méthode appelée lors du clic de souris
   public void mouseClicked(MouseEvent e) {
-	  int nbr_pion_en_jeu = nbr_pion();
-	  int profondeur = 2;
+	  
 	  if(!fin_du_jeu()) {
 		  if(joueur1) {
 			  Deplace_pion(e,r);
 			  r.Selectionner(e);
 		  }
 	  	  else {
-	  		  if(ordinateur) {
-	  			  if(nbr_pion_en_jeu > 7) profondeur = 3; 
-	  			  Deplace_pion_AI(c,profondeur,r,r2);
+	  		  if(!ordinateur) {
+	  			  Deplace_pion(e,r2);  
+	  			  r2.Selectionner(e);
 	  		  }
-	  		  else {
-	  			  Deplace_pion(e,r2);
-	  		  }
-	  		r2.Selectionner(e);
 	  	}
 	  }
 	  if(fin_du_jeu()) {
 		  label.setForeground(Color.black);
 		  if(victoire == 1) label.setText("BRAVO JOUEUR 1");
 		  else {
-			  if(ordinateur)label.setText("L'ORDI GAGNE LA PARTIE");
-			  else label.setText("BRAVO JOUEUR 2");
+			  label.setText("BRAVO JOUEUR 2");
 		  }
 		  fin = true;
 	  }

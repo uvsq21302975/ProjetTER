@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -19,10 +21,10 @@ public class Terrain extends JFrame implements ActionListener{
 	 private Plateau plateau_ordi = new Plateau(label,reserve,reserve2,4);
 	
 	 private boolean ordi = false;
-  
+	 int pronf = 3;
 	  private Bouton rejouer = new Bouton("Rejouer");
-	  
-	  private Bouton Home = new Bouton("Acceuil");
+	  private Bouton Home = new Bouton("Accueil");
+	  private JButton Jouerordi = new JButton("MinMax");
 	  
 	  private JPanel container = new JPanel();
 	  
@@ -57,13 +59,20 @@ public class Terrain extends JFrame implements ActionListener{
 	    
 	    rejouer.setPreferredSize(new Dimension(150, 50));
 	    Home.setPreferredSize(new Dimension(150, 50));
+	    Jouerordi.setPreferredSize(new Dimension(150, 50));
 	    rejouer.addActionListener(new rejouer());
 	    Home.addActionListener(new Home());
-	 
+	    
+	    Jouerordi.setBackground(Color.yellow);
+	    Jouerordi.setContentAreaFilled(false);
+        Jouerordi.setOpaque(true);
+        
+	    Jouerordi.addActionListener(new JouerOrdi());
 	    
 	    JPanel south = new JPanel();
 	    south.add(rejouer);
 	    south.add(Home);
+	    south.add(Jouerordi);
 	    container.add(south, BorderLayout.SOUTH);
 	    
 	    this.setContentPane(container);
@@ -95,9 +104,11 @@ public class Terrain extends JFrame implements ActionListener{
 	    container.add(reserve2, BorderLayout.EAST);
 	    container.add(label, BorderLayout.NORTH);
 	    
+	    
 	    reserve.setPreferredSize(new Dimension(150, 50));
 	    reserve2.setPreferredSize(new Dimension(150, 50));
-	    
+	
+		
 	    rejouer.setPreferredSize(new Dimension(150, 50));
 	    Home.setPreferredSize(new Dimension(150, 50));
 	    rejouer.addActionListener(new rejouer());
@@ -130,6 +141,25 @@ public class Terrain extends JFrame implements ActionListener{
 		Fenetre f = new Fenetre();
 	}
 	
+	public void JouerAI() {
+		
+		if(!plateau_ordi.fin_du_jeu()) {
+			if(!plateau_ordi.joueur1) {
+				if(plateau_ordi.nbr_pion() > 5) pronf = 4;
+				plateau_ordi.Deplace_pion_AI(plateau_ordi.c, pronf, reserve, reserve2);
+				reserve2.Refreash_pion();
+			}
+		}
+		if(plateau_ordi.fin_du_jeu()) {
+			  label.setForeground(Color.black);
+			  if(plateau_ordi.victoire == 1) label.setText("BRAVO JOUEUR 1");
+			  else {
+				 label.setText("L'ORDI GAGNE LA PARTIE");
+			  }
+			  plateau_ordi.fin = true;
+		  }
+	}
+	
 	public void actionPerformed(ActionEvent arg0) {
 		
 	}
@@ -148,5 +178,13 @@ public class Terrain extends JFrame implements ActionListener{
 			   fermer();
 		  }
 		}
-    
+		
+		//Classe écoutant notre troisieme bouton
+		class JouerOrdi implements ActionListener{
+		  //Redéfinition de la méthode actionPerformed()
+		  public void actionPerformed(ActionEvent e) {
+			   JouerAI();
+		  }
+		}
+
 }
