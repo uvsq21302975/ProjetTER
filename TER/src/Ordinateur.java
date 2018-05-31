@@ -108,7 +108,7 @@ public class Ordinateur extends JPanel {
 		                      }
 		    
 		                }
-		        	  else pionhumain = Conversion_point_numero(p);
+		        	  else if(!Case_vide(jeu,p)) pionhumain = Conversion_point_numero(p);
 		          }
 		     }
 		     
@@ -182,6 +182,7 @@ public class Ordinateur extends JPanel {
 	    		 case_modifier.x = randomWithRange(-3,-1);
 	    		 case_modifier.y = randomWithRange(0,15);
 	    		 if(case_modifier.y == pionhumain) case_modifier.y++;
+	    		 if(case_modifier.y == 16) case_modifier.y = 14;
 	    	 }
 	    	 else {
 	    		 case_modifier.x = reste_r;

@@ -38,11 +38,14 @@ public class Reserve extends JPanel implements MouseListener{
 	  setBackground(Color.lightGray);
       
       g.setColor(Color.red);
-	  
+      int j;
 	  int uniteX = getWidth()/4;
 	  int uniteY = uniteX;
 	  for(int i=0; i<3; i++){
 		 g.drawRect(uniteX, uniteY, getWidth()/2, getWidth()/2);
+		 //for(j=0 ;j<5;j++)
+		 j = 6;
+		 g.drawRect(uniteX-j, uniteY-j, getWidth()/2+(2*j), getWidth()/2+(2*j));
 		 uniteY += getHeight()/3;
 	  }
 	  Affiche_pion(g);
@@ -189,7 +192,7 @@ public class Reserve extends JPanel implements MouseListener{
 	  Graphics g = getGraphics(); 
 	  Point p = CoordonnerClik(r);
 	  g.setColor(Color.white); 
-	  g.fillRect(p.x-2, p.y-2, getWidth()/2+3, getWidth()/2+3);
+	  g.fillRect(p.x-2, p.y-2, getWidth()/2+4, getWidth()/2+4);
   }
   
   public void dessine_rectangle(int r) {

@@ -46,13 +46,18 @@ public class Plateau extends JPanel implements MouseListener{
   public void paintComponent(Graphics g){
 	  
 	  g.setColor(Color.black);
+
+	  
 	  int uniteX = getWidth()/4;
 	  int uniteY = getHeight()/4;
-	  for(int i=0; i<5; i++){
-		  if(i==4)g.drawLine(uniteX*i-1, 0, uniteX*i-1, getHeight());
-		g.drawLine(uniteX*i, 0, uniteX*i, getHeight());
-	  	g.drawLine(0, uniteY*i, getWidth(), uniteY*i);
+	  for(int i=0; i<4; i++){
+		  for(int j=0; j<4; j++){
+			  g.drawRect(uniteX*i, uniteY*j, getWidth()/4, getHeight()/4);
+			  g.drawRect(uniteX*i+1, uniteY*j+1, getWidth()/4, getHeight()/4);
+		  }
 	  }
+	  g.drawLine(uniteX*4-1, 0, uniteX*4-1, getHeight());
+	  g.drawLine(uniteX*4-2, 0, uniteX*4-2, getHeight());
 	  init_Case_plateau();
 	  Dessine_pion(g);
   } 
